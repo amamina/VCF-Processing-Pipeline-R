@@ -2,10 +2,9 @@ VCF files are powerful, but they’re not exactly user-friendly if you just want
 
 This project is a simple but complete workflow for handling VCF files in R and turning them into something easier to explore in Excel.
 
-
----
-
 ## What this project does
+
+Starting from a raw VCF file (from DELLY output in my case), this workflow:
 
 * Reads the VCF file into R using `vcfR`
 * Extracts variant-level information (CHROM, POS, REF, ALT, QUAL, etc.)
@@ -15,7 +14,7 @@ This project is a simple but complete workflow for handling VCF files in R and t
 * Combines metadata + variant data into a structured Excel report
 * Performs basic QC checks (chromosome filtering, quality filtering, SNP/INDEL breakdown)
 
-
+---
 
 ## Tools used
 
@@ -23,13 +22,13 @@ This project is a simple but complete workflow for handling VCF files in R and t
 * vcfR
 * openxlsx
 
-
+---
 
 ## Workflow overview
 
 The pipeline follows this flow:
 
-
+```
 VCF file
    ↓
 Read into R (vcfR)
@@ -43,21 +42,35 @@ Combine into full dataset
 Export as TSV + Excel
    ↓
 QC checks (chromosomes, quality, SNP/INDEL stats)
+```
 
-
-
+---
 
 ## Key steps in R
 
-Load libraries and VCF
+### Load libraries and VCF
+
+```r id="x1p9aa"
 library(vcfR)
 library(openxlsx)
 
 vcf <- read.vcfR("your_file.vcf")
-Extract variant information
+```
+
+---
+
+### Extract variant information
+
+```r id="x2p9bb"
 fix_data <- as.data.frame(getFIX(vcf))
 View(fix_data)
-Save variant table
+```
+
+---
+
+### Save variant table
+
+```r id="x3p9cc"
 write.table(fix_data,
             "fix_data.tsv",
             sep = "\t",
@@ -65,13 +78,31 @@ write.table(fix_data,
             row.names = FALSE)
 
 write.xlsx(fix_data, "fix_data.xlsx")
-Extract genotype data
+```
+
+---
+
+### Extract genotype data
+
+```r id="x4p9dd"
 gt_data <- extract.gt(vcf)
 View(gt_data)
-Combine variants + genotypes
+```
+
+---
+
+### Combine variants + genotypes
+
+```r id="x5p9ee"
 combined <- cbind(fix_data, as.data.frame(gt_data))
 View(combined)
-Create Excel report with metadata + data
+```
+
+---
+
+### Create Excel report with metadata + data
+
+```r id="x6p9ff"
 wb <- createWorkbook()
 
 addWorksheet(wb, "VCF")
@@ -85,21 +116,39 @@ start_row <- length(vcf@meta) + 3
 writeData(wb, "VCF", combined, startRow = start_row)
 
 saveWorkbook(wb, "VCF_single_sheet.xlsx", overwrite = TRUE)
-Basic QC checks
+```
+
+---
+
+## Basic QC checks
 
 Some quick checks I used after loading the data:
 
-Look at chromosome format
+### Look at chromosome format
+
+```r id="x7p9gg"
 str(fix_data$CHROM)
-Filter chromosome 17 variants
+```
+
+### Filter chromosome 17 variants
+
+```r id="x8p9hh"
 subset(fix_data, CHROM == "chr17")
-High-quality variants
+```
+
+### High-quality variants
+
+```r id="x9p9ii"
 subset(fix_data, QUAL > 90)
-SNP vs INDEL summary
+```
+
+### SNP vs INDEL summary
+
+```r id="x10p9jj"
 table(nchar(fix_data$REF), nchar(fix_data$ALT))
+```
 
-
-
+---
 
 ## Output files
 
@@ -109,7 +158,6 @@ This pipeline generates:
 * `fix_data.xlsx` → variant table in Excel format
 * `gt_data.xlsx` → genotype matrix
 * `VCF_single_sheet.xlsx` → metadata + full dataset combined
-
 
 
 ## Why I built this
