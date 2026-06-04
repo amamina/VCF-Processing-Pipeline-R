@@ -1,5 +1,5 @@
 VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap by:
-,Understanding of the VCF format
+ Understanding of the VCF format
 ,Use of R for bioinformatics data processing
 ,Data extraction from specialized genomic formats
 ,Export to analysis-friendly formats (CSV/XLSX)
@@ -54,26 +54,15 @@ QC checks (chromosomes, quality, SNP/INDEL stats)
 
 ## Key steps in R
 
-### Load libraries and VCF
-
+Load libraries and VCF
 library(vcfR)
 library(openxlsx)
 
 vcf <- read.vcfR("your_file.vcf")
-
-
-
-
-### Extract variant information
-
+Extract variant information
 fix_data <- as.data.frame(getFIX(vcf))
 View(fix_data)
-
-
-
-
-### Save variant table
-
+Save variant table
 write.table(fix_data,
             "fix_data.tsv",
             sep = "\t",
@@ -81,25 +70,13 @@ write.table(fix_data,
             row.names = FALSE)
 
 write.xlsx(fix_data, "fix_data.xlsx")
-
-
-
-### Extract genotype data
-
+Extract genotype data
 gt_data <- extract.gt(vcf)
 View(gt_data)
-
-
-
-### Combine variants + genotypes
-
+Combine variants + genotypes
 combined <- cbind(fix_data, as.data.frame(gt_data))
 View(combined)
-
-
-
-### Create Excel report with metadata + data
-
+Create Excel report with metadata + data
 wb <- createWorkbook()
 
 addWorksheet(wb, "VCF")
@@ -113,31 +90,17 @@ start_row <- length(vcf@meta) + 3
 writeData(wb, "VCF", combined, startRow = start_row)
 
 saveWorkbook(wb, "VCF_single_sheet.xlsx", overwrite = TRUE)
-
-
-
-
-## Basic QC checks
+Basic QC checks
 
 Some quick checks I used after loading the data:
 
-### Look at chromosome format
-
+Look at chromosome format
 str(fix_data$CHROM)
-
-
-### Filter chromosome 17 variants
-
+Filter chromosome 17 variants
 subset(fix_data, CHROM == "chr17")
-
-
-### High-quality variants
-
+High-quality variants
 subset(fix_data, QUAL > 90)
-
-
-### SNP vs INDEL summary
-
+SNP vs INDEL summary
 table(nchar(fix_data$REF), nchar(fix_data$ALT))
 
 
