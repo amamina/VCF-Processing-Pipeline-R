@@ -1,14 +1,12 @@
-# VCF-Processing-Pipeline-R
-Understanding of the VCF format
-Use of R for bioinformatics data processing
-Data extraction from specialized genomic formats
-Export to analysis-friendly formats (CSV/XLSX)
-Handling metadata and genotype information separately
-Creation of a reproducible workflow
-
+VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap by:
+-Understanding of the VCF format
+-Use of R for bioinformatics data processing
+-Data extraction from specialized genomic formats
+-Export to analysis-friendly formats (CSV/XLSX)
+-Handling metadata and genotype information separately
+-Creation of a reproducible workflow
 This project is a simple but complete workflow for handling VCF files in R and turning them into something easier to explore in Excel.
 
-VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap.
 
 ---
 
@@ -22,7 +20,7 @@ VCF files are powerful, but they’re not exactly user-friendly if you just want
 * Combines metadata + variant data into a structured Excel report
 * Performs basic QC checks (chromosome filtering, quality filtering, SNP/INDEL breakdown)
 
----
+
 
 ## Tools used
 
@@ -30,13 +28,13 @@ VCF files are powerful, but they’re not exactly user-friendly if you just want
 * vcfR
 * openxlsx
 
----
+
 
 ## Workflow overview
 
 The pipeline follows this flow:
 
-```
+
 VCF file
    ↓
 Read into R (vcfR)
@@ -52,7 +50,7 @@ Export as TSV + Excel
 QC checks (chromosomes, quality, SNP/INDEL stats)
 ```
 
----
+
 
 ## Key steps in R
 
@@ -64,7 +62,7 @@ library(openxlsx)
 vcf <- read.vcfR("your_file.vcf")
 ```
 
----
+
 
 ### Extract variant information
 
@@ -72,7 +70,7 @@ fix_data <- as.data.frame(getFIX(vcf))
 View(fix_data)
 ```
 
----
+
 
 ### Save variant table
 
@@ -85,7 +83,6 @@ write.table(fix_data,
 write.xlsx(fix_data, "fix_data.xlsx")
 ```
 
----
 
 ### Extract genotype data
 
@@ -93,7 +90,6 @@ gt_data <- extract.gt(vcf)
 View(gt_data)
 ```
 
----
 
 ### Combine variants + genotypes
 
@@ -101,7 +97,6 @@ combined <- cbind(fix_data, as.data.frame(gt_data))
 View(combined)
 ```
 
----
 
 ### Create Excel report with metadata + data
 
@@ -120,7 +115,7 @@ writeData(wb, "VCF", combined, startRow = start_row)
 saveWorkbook(wb, "VCF_single_sheet.xlsx", overwrite = TRUE)
 ```
 
----
+
 
 ## Basic QC checks
 
@@ -146,7 +141,7 @@ subset(fix_data, QUAL > 90)
 table(nchar(fix_data$REF), nchar(fix_data$ALT))
 ```
 
----
+
 
 ## Output files
 
@@ -157,7 +152,7 @@ This pipeline generates:
 * `gt_data.xlsx` → genotype matrix
 * `VCF_single_sheet.xlsx` → metadata + full dataset combined
 
----
+
 
 ## Why I built this
 
@@ -170,7 +165,7 @@ It’s especially useful for:
 * Basic filtering and QC
 * Learning how VCF structure maps into tabular form
 
----
+
 
 ## Notes
 
