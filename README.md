@@ -1,10 +1,10 @@
 VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap by:
--Understanding of the VCF format
--Use of R for bioinformatics data processing
--Data extraction from specialized genomic formats
--Export to analysis-friendly formats (CSV/XLSX)
--Handling metadata and genotype information separately
--Creation of a reproducible workflow
+,Understanding of the VCF format
+,Use of R for bioinformatics data processing
+,Data extraction from specialized genomic formats
+,Export to analysis-friendly formats (CSV/XLSX)
+,Handling metadata and genotype information separately
+,Creation of a reproducible workflow
 This project is a simple but complete workflow for handling VCF files in R and turning them into something easier to explore in Excel.
 
 
@@ -48,7 +48,7 @@ Combine into full dataset
 Export as TSV + Excel
    ↓
 QC checks (chromosomes, quality, SNP/INDEL stats)
-```
+
 
 
 
@@ -60,7 +60,7 @@ library(vcfR)
 library(openxlsx)
 
 vcf <- read.vcfR("your_file.vcf")
-```
+
 
 
 
@@ -68,7 +68,7 @@ vcf <- read.vcfR("your_file.vcf")
 
 fix_data <- as.data.frame(getFIX(vcf))
 View(fix_data)
-```
+
 
 
 
@@ -81,21 +81,21 @@ write.table(fix_data,
             row.names = FALSE)
 
 write.xlsx(fix_data, "fix_data.xlsx")
-```
+
 
 
 ### Extract genotype data
 
 gt_data <- extract.gt(vcf)
 View(gt_data)
-```
+
 
 
 ### Combine variants + genotypes
 
 combined <- cbind(fix_data, as.data.frame(gt_data))
 View(combined)
-```
+
 
 
 ### Create Excel report with metadata + data
@@ -113,7 +113,7 @@ start_row <- length(vcf@meta) + 3
 writeData(wb, "VCF", combined, startRow = start_row)
 
 saveWorkbook(wb, "VCF_single_sheet.xlsx", overwrite = TRUE)
-```
+
 
 
 
@@ -124,22 +124,22 @@ Some quick checks I used after loading the data:
 ### Look at chromosome format
 
 str(fix_data$CHROM)
-```
+
 
 ### Filter chromosome 17 variants
 
 subset(fix_data, CHROM == "chr17")
-```
+
 
 ### High-quality variants
 
 subset(fix_data, QUAL > 90)
-```
+
 
 ### SNP vs INDEL summary
 
 table(nchar(fix_data$REF), nchar(fix_data$ALT))
-```
+
 
 
 
@@ -166,10 +166,9 @@ It’s especially useful for:
 * Learning how VCF structure maps into tabular form
 
 
-
 ## Notes
 
 * This is meant for exploration and reporting because doing this manually in Excel becomes tedious for large dataset.
 * For large datasets or production workflows, tools like `bcftools` or Bioconductor pipelines are more appropriate.
 
----
+
