@@ -1,1 +1,9 @@
+Data Source
 
+The dataset used in this project was downloaded from the NCBI GEO database:
+
+Accession: Gene Expression Omnibus (GEO) GSE301130
+File used: GSE301130_c142_2wk_combinedReps_DELLY.vcf.gz
+Source link: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE301130
+
+This file contains structural variant calls generated using DELLY.
