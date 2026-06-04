@@ -1,10 +1,5 @@
-VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap by:
- Understanding of the VCF format
-,Use of R for bioinformatics data processing
-,Data extraction from specialized genomic formats
-,Export to analysis-friendly formats (CSV/XLSX)
-,Handling metadata and genotype information separately
-,Creation of a reproducible workflow
+VCF files are powerful, but they’re not exactly user-friendly if you just want to quickly inspect variants or share results. This pipeline helps bridge that gap by: understanding of the VCF format, use of R for bioinformatics data processing, data extraction from specialized genomic formats, export to analysis-friendly formats (CSV/XLSX), handling metadata and genotype information separately, creation of a reproducible workflow.
+
 This project is a simple but complete workflow for handling VCF files in R and turning them into something easier to explore in Excel.
 
 
