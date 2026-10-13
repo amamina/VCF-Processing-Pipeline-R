@@ -168,7 +168,7 @@ It’s especially useful for:
 
 * Quick variant inspection
 * Sharing results in Excel format
-* Basic filtering and QC
+* filtering and QC
 * Learning how VCF structure maps into tabular form
 
 
